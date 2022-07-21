@@ -1,4 +1,4 @@
-import { IsString, MinLength, MaxLength, Matches, IsEnum } from 'class-validator';
+import { IsString, IsEmail, MinLength, MaxLength, IsEnum } from 'class-validator';
 import { UserTypes } from '../user-type.enum';
 
 export class CreateUserDto {
@@ -7,8 +7,7 @@ export class CreateUserDto {
   @MaxLength(50)
   name: string;
 
-  @IsString()
-  @Matches(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i, { message: 'Invalid e-mail' })
+  @IsEmail()
   email: string;
 
   @IsString()
