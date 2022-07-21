@@ -8,11 +8,11 @@ import { CompanyInformationDto } from './dto/company-information.dto';
 export class CompanyService {
   constructor(@InjectModel(Company.name) private companyModel: Model<CompanyDocument>) {}
 
-  async createCompany(createCompanyDto: CompanyInformationDto): Promise<string> {
+  async createCompany(createCompanyDto: CompanyInformationDto): Promise<{ message: string }> {
     try {
       const createdCompany = new this.companyModel(createCompanyDto);
       createdCompany.save();
-      return "Created!";
+      return { message: 'Created' };
     } catch (error) {
       return error.message;
     }
