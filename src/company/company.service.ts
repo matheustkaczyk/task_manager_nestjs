@@ -8,7 +8,7 @@ import { CompanyInformationDto } from './dto/company-information.dto';
 export class CompanyService {
   constructor(@InjectModel(Company.name) private companyModel: Model<CompanyDocument>) {}
 
-  async createCompany(createCompanyDto: CompanyInformationDto): Promise<{ message: string } | never> {
+  async createCompany(createCompanyDto: CompanyInformationDto): Promise<{ message: string } | HttpException> {
     try {
       const createdCompany = new this.companyModel(createCompanyDto);
 
