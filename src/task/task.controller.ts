@@ -7,7 +7,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Post()
+  @Post('create')
   create(@Body(ValidationPipe) createTaskDto: CreateTaskDto) {
     return this.taskService.create(createTaskDto);
   }

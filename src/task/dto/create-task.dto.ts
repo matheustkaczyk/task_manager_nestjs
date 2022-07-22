@@ -1,4 +1,4 @@
-import { IsString, IsDate, IsEnum } from 'class-validator';
+import { IsString, IsEnum } from 'class-validator';
 import { TaskStatusEnum } from '../status-type.enum';
 
 export class CreateTaskDto {
@@ -8,8 +8,8 @@ export class CreateTaskDto {
   @IsString({ each: true })
   accountable: string[];
 
-  @IsDate()
-  deliveryDate: Date;
+  @IsString()
+  deliveryDate: string;
 
   @IsString()
   @IsEnum(TaskStatusEnum)

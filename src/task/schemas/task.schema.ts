@@ -18,4 +18,4 @@ export class Task {
   status: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass(Task);
+export const TaskSchema = SchemaFactory.createForClass(Task);
