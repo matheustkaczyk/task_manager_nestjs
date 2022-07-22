@@ -27,7 +27,11 @@ export class TaskService {
   async update(id: string, updateTaskDto: UpdateTaskDto) {
     const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
 
-    console.log(updatingTask)
+    if (updatingTask) {
+      return { message: 'Task updated successfully!' }
+    }
+
+    return { message: 'Wrong ID format or task not found!' }
   }
 
   async remove(id: string): Promise<{ message: string }> {
