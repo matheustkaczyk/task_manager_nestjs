@@ -20,15 +20,21 @@ export class TaskService {
     return `This action returns all task`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
+  update(id: string, updateTaskDto: UpdateTaskDto) {
     return `This action updates a #${id} task`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: string): Promise<{ message: string }> {
+    const deletedTask = await this.TaskModel.deleteOne({ _id: id });
+    
+    if (deletedTask.deletedCount > 0) {
+      return { message: "Task successfully deleted" }
+    }
+
+    return { message: "Task not found" }
   }
 }
