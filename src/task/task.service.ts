@@ -24,14 +24,19 @@ export class TaskService {
     return `This action returns a #${id} task`;
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto) {
-    const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
-
-    if (updatingTask) {
-      return { message: 'Task updated successfully!' }
+  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<{ message: string }> {
+    try {
+      const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
+  
+      if (updatingTask) {
+        return { message: 'Task updated successfully!' }
+      }
+      
+      return { message: 'Task not found!' }
+    } catch (error) {
+      return { message: 'Wrong ID format!' }
     }
 
-    return { message: 'Wrong ID format or task not found!' }
   }
 
   async remove(id: string): Promise<{ message: string }> {
