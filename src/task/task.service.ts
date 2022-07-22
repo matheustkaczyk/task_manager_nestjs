@@ -27,8 +27,18 @@ export class TaskService {
     return { message: "No Task found!" }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} task`;
+  async findOne(id: string): Promise<{ message: string } | StoredTask> {
+    try {
+      const foundTask = await this.TaskModel.findOne({ _id: id });
+  
+      if (foundTask) {
+        return foundTask;
+      }
+      
+      return { message: 'Task not found!' }
+    } catch (error) {
+      return { message: 'Wrong ID format!' }
+    }
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<{ message: string }> {
@@ -43,7 +53,6 @@ export class TaskService {
     } catch (error) {
       return { message: 'Wrong ID format!' }
     }
-
   }
 
   async remove(id: string): Promise<{ message: string }> {
