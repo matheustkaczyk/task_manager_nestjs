@@ -5,6 +5,9 @@ export class CreateTaskDto {
   @IsString()
   name: string;
 
+  @IsString()
+  createdBy: string;
+
   @IsString({ each: true })
   accountable: string[];
 

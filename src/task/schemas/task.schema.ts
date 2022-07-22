@@ -9,6 +9,9 @@ export class Task {
   name: string;
 
   @Prop({ required: true })
+  createdBy: string;
+
+  @Prop({ required: true })
   accountable: string[];
 
   @Prop({ required: true })
