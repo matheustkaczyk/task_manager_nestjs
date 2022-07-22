@@ -21,8 +21,8 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.userModel.find().select('-password');
   }
 
   findOne(id: number) {
