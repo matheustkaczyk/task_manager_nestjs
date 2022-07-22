@@ -25,7 +25,7 @@ export class UserService {
     return await this.userModel.find().select('-password');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return await this.userModel.findOne({ _id: id });
   }
 }
