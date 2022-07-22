@@ -3,6 +3,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task, TaskDocument } from './schemas/task.schema';
+import { StoredTask } from '../task/stored-task.interface';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -16,8 +17,14 @@ export class TaskService {
     return createdTask;
   }
 
-  findAll() {
-    return `This action returns all task`;
+  async findAll(): Promise<{ message: string } | StoredTask[]> {
+    const foundTasks = await this.TaskModel.find();
+
+    if (foundTasks.length > 0) {
+      return foundTasks;
+    }
+
+    return { message: "No Task found!" }
   }
 
   findOne(id: string) {
