@@ -24,8 +24,10 @@ export class TaskService {
     return `This action returns a #${id} task`;
   }
 
-  update(id: string, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: string, updateTaskDto: UpdateTaskDto) {
+    const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
+
+    console.log(updatingTask)
   }
 
   async remove(id: string): Promise<{ message: string }> {
