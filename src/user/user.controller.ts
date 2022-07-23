@@ -20,4 +20,9 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
+
+  @Get(':email')
+  findOneByEmail(@Param('email') email:string) {
+    return this.userService.findOneByEmail(email);
+  }
 }
