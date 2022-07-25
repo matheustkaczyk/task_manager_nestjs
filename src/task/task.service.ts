@@ -6,6 +6,7 @@ import { Task, TaskDocument } from './schemas/task.schema';
 import { StoredTask } from '../task/stored-task.interface';
 import { UserService } from '../user/user.service';
 import { Model } from 'mongoose';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class TaskService {
@@ -45,15 +46,26 @@ export class TaskService {
     }
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<{ message: string }> {
+  async update(id: string, updateTaskDto: UpdateTaskDto, user: any): Promise<{ message: string }> {
     try {
-      const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
-  
-      if (updatingTask) {
-        return { message: 'Task updated successfully!' }
+      const foundUser = await this.userService.findOne(user.id);
+      const foundTask = await this.TaskModel.findById(id);
+
+      if (
+        foundUser.type === 'admin' ||
+        foundTask.createdBy === foundUser.name ||
+        foundTask.accountable.some((person) => person === foundUser.name)
+      ) {
+        const updatingTask = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
+    
+        if (updatingTask) {
+          return { message: 'Task updated successfully!' }
+        }
+        
+        return { message: 'Task not found!' }
       }
-      
-      return { message: 'Task not found!' }
+
+      return { message: "No permission" }
     } catch (error) {
       return { message: 'Wrong ID format!' }
     }
@@ -62,8 +74,8 @@ export class TaskService {
   async remove(id: string | string[], user: any): Promise<HttpException> {
     const userFound = await this.userService.findOne(user.id);
     let deletedCount = 0;
+
     try {
-      
       if (userFound.type === 'admin') {
         if (Array.isArray(id)) {
           const deletedTasks = await this.TaskModel.deleteMany({ _id: { $in: id } });

@@ -28,8 +28,8 @@ export class TaskController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body(ValidationPipe) updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(id, updateTaskDto);
+  update(@Param('id') id: string, @Body(ValidationPipe) updateTaskDto: UpdateTaskDto, @Request() req) {
+    return this.taskService.update(id, updateTaskDto, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
