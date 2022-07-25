@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -55,13 +55,23 @@ export class TaskService {
     }
   }
 
-  async remove(id: string): Promise<{ message: string }> {
-    const deletedTask = await this.TaskModel.deleteOne({ _id: id });
-    
-    if (deletedTask.deletedCount > 0) {
-      return { message: "Task successfully deleted" }
-    }
+  async remove(id: string | string[]): Promise<HttpException> {
+    let deletedCount = 0;
 
-    return { message: "Task not found" }
+    try {
+      if (Array.isArray(id)) {
+        const deletedTasks = await this.TaskModel.deleteMany({ _id: { $in: id } });
+  
+        deletedCount = deletedTasks.deletedCount;
+      } else {
+        const deletedTask = await this.TaskModel.deleteOne({ _id: id });
+  
+        deletedCount = deletedTask.deletedCount;
+      }
+
+      return deletedCount > 0 ? new HttpException('Deleted', HttpStatus.OK) : new HttpException('Bad request', HttpStatus.BAD_REQUEST)
+    } catch (error) {
+      return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
   }
 }

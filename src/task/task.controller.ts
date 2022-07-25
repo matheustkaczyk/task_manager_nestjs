@@ -33,8 +33,8 @@ export class TaskController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('id')
+  remove(@Body('id') id: string | string[]) {
     return this.taskService.remove(id);
   }
 }
