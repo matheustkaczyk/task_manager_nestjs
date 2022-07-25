@@ -4,11 +4,15 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task, TaskDocument } from './schemas/task.schema';
 import { StoredTask } from '../task/stored-task.interface';
+import { UserService } from '../user/user.service';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel(Task.name) private TaskModel: Model<TaskDocument>) {}
+  constructor(
+    @InjectModel(Task.name) private TaskModel: Model<TaskDocument>,
+    private userService: UserService
+    ) {}
 
   async create(createTaskDto: CreateTaskDto) {
     const createdTask = new this.TaskModel(createTaskDto);
@@ -55,21 +59,49 @@ export class TaskService {
     }
   }
 
-  async remove(id: string | string[]): Promise<HttpException> {
+  async remove(id: string | string[], user: any): Promise<HttpException> {
+    const userFound = await this.userService.findOne(user.id);
     let deletedCount = 0;
-
     try {
-      if (Array.isArray(id)) {
-        const deletedTasks = await this.TaskModel.deleteMany({ _id: { $in: id } });
+      
+      if (userFound.type === 'admin') {
+        if (Array.isArray(id)) {
+          const deletedTasks = await this.TaskModel.deleteMany({ _id: { $in: id } });
   
-        deletedCount = deletedTasks.deletedCount;
+          deletedCount += deletedTasks.deletedCount;
+        } else {
+          const deletedTask = await this.TaskModel.deleteOne({ _id: id });
+  
+          deletedCount += deletedTask.deletedCount;
+        }
       } else {
-        const deletedTask = await this.TaskModel.deleteOne({ _id: id });
+        if (Array.isArray(id)) {
+          id.map(async (idNumber) => {
+            console.log(id);
+            const foundTask = await this.TaskModel.findById(idNumber) as any;
   
-        deletedCount = deletedTask.deletedCount;
-      }
+            const isCreator = foundTask.createdBy === userFound.name;
+            const isAccountable = foundTask.accountable.some((person) => person === userFound.name);
+  
+            if (isCreator || isAccountable) {
+              const deletedTasks = await this.TaskModel.deleteMany({ _id: { $in: idNumber } });
+  
+              deletedCount += deletedTasks.deletedCount;
+            }
+          })
+        } else {
+          const foundTask = await this.TaskModel.findOne({ _id: id }) as StoredTask;
 
-      return deletedCount > 0 ? new HttpException('Deleted', HttpStatus.OK) : new HttpException('Bad request', HttpStatus.BAD_REQUEST)
+          const isCreator = foundTask.createdBy === userFound.name;
+          const isAccountable = foundTask.accountable.some((person) => person === userFound.name);
+            
+          if (isCreator || isAccountable) {
+            const deletedTasks = await this.TaskModel.deleteOne({ _id: id });
+
+            deletedCount += deletedTasks.deletedCount;
+          }
+        }
+      }
     } catch (error) {
       return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     }
