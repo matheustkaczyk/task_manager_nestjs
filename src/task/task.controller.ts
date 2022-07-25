@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Request, Delete, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Request, Delete, ValidationPipe, UseGuards, Put } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -36,5 +36,11 @@ export class TaskController {
   @Delete('id')
   remove(@Body('id') id: string | string[], @Request() req) {
     return this.taskService.remove(id, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('id')
+  put(@Body('id') id: string, @Body('status') status: string, @Request() req) {
+    return this.taskService.put(id, status, req.user);
   }
 }

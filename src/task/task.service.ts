@@ -118,4 +118,27 @@ export class TaskService {
       return new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     }
   }
+
+  async put(id: string, status: string, user: any) {
+    try {
+      const foundUser = await this.userService.findOne(user.id);
+      const foundTask = await this.TaskModel.findById(id);
+
+      if (
+        foundUser.type === 'admin' ||
+        foundTask.createdBy === foundUser.name ||
+        foundTask.accountable.some((person) => person === foundUser.name)
+      ) {
+        const updatingStatus = await this.TaskModel.findByIdAndUpdate(id, { $set: { status } });
+
+        if (updatingStatus) {
+          return new HttpException('OK', HttpStatus.OK);
+        }
+      }
+
+      return new HttpException('No permission', HttpStatus.UNAUTHORIZED);
+    } catch (error) {
+      return new HttpException('Wrong ID Format', HttpStatus.BAD_REQUEST);
+    }
+  }
 }
