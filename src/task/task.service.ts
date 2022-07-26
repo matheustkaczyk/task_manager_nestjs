@@ -21,14 +21,22 @@ export class TaskService {
     return createdTask;
   }
 
-  async findAll(): Promise<{ message: string } | StoredTask[]> {
-    const foundTasks = await this.TaskModel.find();
+  async findAll(user): Promise<{ message: string } | StoredTask[]> {
+    try {
+      const foundUser = await this.userService.findOne(user.id);
 
-    if (foundTasks.length > 0) {
-      return foundTasks;
+      if (foundUser.type === 'admin') {
+        const foundTasks = await this.TaskModel.find();
+    
+        return foundTasks;
+      } else {
+        const foundTasks = await this.TaskModel.find({ $or: [{ name: foundUser.name }, { accountable: { $in: foundUser.name } }] })
+
+        return foundTasks;
+      }
+    } catch (error) {
+      return error.message;
     }
-
-    return { message: "No Task found!" }
   }
 
   async findOne(id: string): Promise<{ message: string } | StoredTask> {
