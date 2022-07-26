@@ -2,17 +2,24 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose'
+import { InjectModel } from '@nestjs/mongoose';
+import { CompanyService } from '../company/company.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private companyService: CompanyService
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<{ message: string } | HttpException>  {
     try {
-      const createdUser = await this.userModel.create(createUserDto);
+      const [createdUser, addedWorker] = await Promise.all([
+        await this.userModel.create(createUserDto),
+        await this.companyService.addWorker(createUserDto.name)
+      ])
   
-      if (createdUser) {
+      if (createdUser && addedWorker) {
         return { message: "Created" };
       }
 

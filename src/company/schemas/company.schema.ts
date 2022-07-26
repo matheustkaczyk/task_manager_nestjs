@@ -7,6 +7,9 @@ export type CompanyDocument = Company & Document;
 export class Company {
   @Prop({ required: true, unique: true })
   name: string;
+
+  @Prop()
+  workers: string[];
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

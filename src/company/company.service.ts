@@ -22,4 +22,14 @@ export class CompanyService {
       return error.message;
     }
   }
+
+  async addWorker(workerName: string) {
+    try {
+      const addWorker = await this.companyModel.findOneAndUpdate({ name: 'Workmize' }, { $addToSet: { workers: workerName } });
+
+      return addWorker;
+    } catch (error) {
+      return error.message;
+    }
+  }
 }
