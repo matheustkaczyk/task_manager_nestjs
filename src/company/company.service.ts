@@ -10,10 +10,9 @@ export class CompanyService {
 
   async createCompany(createCompanyDto: CompanyInformationDto): Promise<{ message: string } | HttpException> {
     try {
-      const createdCompany = new this.companyModel(createCompanyDto);
+      const createdCompany = await this.companyModel.create(createCompanyDto);
 
-      if (!createdCompany.name) {
-        createdCompany.save();
+      if (createdCompany) {
         return { message: 'Created' };
       }
 

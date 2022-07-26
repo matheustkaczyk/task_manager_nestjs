@@ -7,7 +7,15 @@ import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+const DB = process.env.DB || "mongodb://localhost:27017";
+
 @Module({
-  imports: [MongooseModule.forRoot(process.env.DB || 'mongodb://localhost/workspace'), CompanyModule, UserModule, TaskModule, AuthModule],
+  imports: [
+    MongooseModule.forRoot(DB),
+    CompanyModule,
+    UserModule,
+    TaskModule,
+    AuthModule
+  ],
 })
 export class AppModule {}
