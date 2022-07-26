@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const DB = process.env.DB || "mongodb://localhost:27017";
+const DB = process.env.MONGODB_CONNSTRING || "mongodb://db_mongo:27017";
 
 @Module({
   imports: [

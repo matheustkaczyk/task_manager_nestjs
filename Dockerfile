@@ -1,4 +1,6 @@
-FROM node:16.15.0-alpine as development
+FROM node:16.15.0 as development
+
+ENV secret=mysecret
 
 WORKDIR /usr/src/api
 
@@ -8,12 +10,20 @@ RUN npm install
 
 EXPOSE 3000
 
-ENV PORT=3000
+COPY . .
 
-ENV DB=mongodb+srv://tkaczyk:tkaczyk2022@cluster0.ljthc.mongodb.net/workspace?retryWrites=true&w=majority
+RUN npm run build
 
-ENV secret=mysecret
+FROM node:16.15.0 as production
+
+WORKDIR /usr/src/api
+
+COPY package*.json .
+
+RUN npm install
 
 COPY . .
 
-RUN npm run start
+COPY --from=development /usr/src/api/dist ./dist
+
+CMD [ "node", "dist/main" ]

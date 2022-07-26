@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  db:
+    image: mongo
+    container_name: db_mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+  api:
+    depends_on:
+      - db
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      MONGODB_CONNSTRING: mongodb://db:27017
+      SECRET: mysecret
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  mongodata: {}
