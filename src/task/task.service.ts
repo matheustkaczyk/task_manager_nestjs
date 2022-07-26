@@ -6,7 +6,6 @@ import { Task, TaskDocument } from './schemas/task.schema';
 import { StoredTask } from '../task/stored-task.interface';
 import { UserService } from '../user/user.service';
 import { Model } from 'mongoose';
-import { identity } from 'rxjs';
 
 @Injectable()
 export class TaskService {
