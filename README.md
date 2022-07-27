@@ -156,7 +156,7 @@ Endpoint para atualizar apenas o status de uma tarefa pelo seu ID (TOKEN NECESS�
 ## **Maiores desafios**
 O maior desafio foi o desejo de me desafiar e faze-lá toda em Nest.js, uma ferramenta que ainda não tenho total domínio, 
 me sinto feliz de ter feito com Nest, obti uma grande confiança com a ferramenta.
-O segundo maior desafio foi o tempo, em ter de escolher bem o que fazer bom o pouco tempo que se tinha para desenvolver.
+O segundo maior desafio foi o tempo, em ter de escolher bem o que fazer com o pouco tempo que se tinha para desenvolver.
 
 ---
 
