@@ -104,15 +104,14 @@ Endpoint para pegar todas as informações de usuário
 ### POST - Cria uma nova tarefa (/task/create)
 Endpoint para criar uma nova tarefa (TOKEN NECESSÁRIO)
 ```json
- 
-```
-{
+ {
 	"name": "Nome tarefa 1",
 	"createdBy": "Matheus Tkaczyk",
 	"accountable": "Matheus Tkaczyk",
 	"deliveryDate": "2022-07-28T14:07:31.202Z",
 	"status": "open"
 }
+```
 
 ### GET - Busca todas as tarefas (/task)
 Endpoint para buscar todas as tarefas, respeitando as permissões (TOKEN NECESSÁRIO)
@@ -158,6 +157,7 @@ Endpoint para atualizar apenas o status de uma tarefa pelo seu ID (TOKEN NECESS�
 ## **Maiores desafios**
 O maior desafio foi o desejo de me desafiar e faze-lá toda em Nest.js, uma ferramenta que ainda não tenho total domínio, 
 me sinto feliz de ter feito com Nest, obti uma grande confiança com a ferramenta.
+O segundo maior desafio foi o tempo, em ter de escolher bem o que fazer bom o pouco tempo que se tinha para desenvolver.
 
 ---
 
