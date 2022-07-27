@@ -61,7 +61,6 @@ Para rodar esse projeto é necessário ter instalado em sua máquina o runtime N
 1. Foi disponibilizado uma api online onde poderá ser feito requisições de forma a não instalar nada no computador. É só fazer as requisições com os formatos descritos na seção de **ROTAS**. O link para acessar a API está logo abaixo.
    1. **`COLOCAR O LINK`**
    1. [ATENÇÃO] - Vale destacar que a **primeira requisição** do Heroku pode demorar e as vezes até falhar. Se não funcionar de primeira, por gentileza **tente cancelar e refazer** a requisição.
-   2. Por enquanto só há um administrador cadastrado, segue o login: **` email: root@root.com, senha: root `**
 
 ---
 
