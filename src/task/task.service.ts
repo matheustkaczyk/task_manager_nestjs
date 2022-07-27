@@ -126,7 +126,7 @@ export class TaskService {
     }
   }
 
-  async put(id: string, status: string, user: any) {
+  async patch(id: string, status: string, user: any) {
     try {
       const foundUser = await this.userService.findOne(user.id);
       const foundTask = await this.TaskModel.findById(id);

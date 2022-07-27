@@ -27,7 +27,7 @@ export class TaskController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body(ValidationPipe) updateTaskDto: UpdateTaskDto, @Request() req) {
     return this.taskService.update(id, updateTaskDto, req.user);
   }
@@ -39,8 +39,8 @@ export class TaskController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('id')
-  put(@Body('id') id: string, @Body('status') status: string, @Request() req) {
-    return this.taskService.put(id, status, req.user);
+  @Patch('id')
+  patchStatus(@Body('id') id: string, @Body('status') status: string, @Request() req) {
+    return this.taskService.patch(id, status, req.user);
   }
 }
