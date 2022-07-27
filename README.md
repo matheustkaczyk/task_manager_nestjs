@@ -140,7 +140,7 @@ Endpoint para deletar uma ou mais tarefas pelo seu ID (TOKEN NECESSÁRIO)
 
 ### PATCH - Atualiza o status de uma tarefa pelo seu ID (/task/id)
 Endpoint para atualizar apenas o status de uma tarefa pelo seu ID (TOKEN NECESSÁRIO)
-````json
+```json
 {
 	"id": "62dede4567da5b6fc03ecdd2",
 	"status": "finished"
